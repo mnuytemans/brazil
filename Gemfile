@@ -56,3 +56,7 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+# Use Twitter Bootstrap Framework for HTML5 Application Design
+gem 'bootstrap-sass', '2.3.2.0'
+gem 'sprockets', '2.11.0'
