@@ -1,5 +1,5 @@
 Brazil::Application.routes.draw do
-  get "users/New"
+  resources :users
   root  'static_pages#home'
   match '/signup', to: 'users#New', via: 'get'
   

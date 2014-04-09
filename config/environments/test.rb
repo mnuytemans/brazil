@@ -33,4 +33,7 @@ Brazil::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Reduce the security of the has in test environment to get better performance
+  ActiveModel::SecurePassword.min_cost = true
 end
