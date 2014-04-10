@@ -1,4 +1,5 @@
 Brazil::Application.routes.draw do
+  get "games/new"
   resources :users, :games
   resources :sessions, only: [:new, :create, :destroy]
   root  'static_pages#home'

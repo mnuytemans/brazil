@@ -1,0 +1,18 @@
+<%= form_for(@game) do |f|%>
+			<%= render 'shared/error_messages', object: f.object %>
+
+			<%= f.label :playdate %>
+	      	<%= f.date_field :playdate %>
+
+			<%= f.label :homeside %>
+	      	<%= f.text_field :homeside %>
+
+	      	<%= f.label :awayside %>
+	      	<%= f.text_field :awayside %>
+
+		 	<%= f.label :group %>
+		    <%= f.text_field :group %>
+
+	     	<%= f.submit "Create game", class: "btn btn-large btn-primary" %>
+ <% end %>
+  

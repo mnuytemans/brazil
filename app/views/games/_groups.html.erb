@@ -1,0 +1,20 @@
+		<% @groups = Game.distinct.pluck(:group) %>
+		<% @groups.each do |group| %>
+		<h2><%= group %></h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Homeside</th>
+						<th>Awayside</th>
+						<th>Homescore</th>
+						<th>Awayscore</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% @games.where(group: group).order(playdate: :asc).each do |game|%>
+						<%= render game %>
+					<% end %>
+				</tbody>
+			</table>
+		<% end %>

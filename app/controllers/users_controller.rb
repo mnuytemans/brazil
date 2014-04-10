@@ -3,12 +3,13 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:edit, :update]
   before_action :admin_user, only: [:destroy]
 
-def index
-  @users = User.all
-end
+  def index
+    @users = User.all
+  end
 
   def show
   	@user = User.find(params[:id])
+    @games = Game.all
   end
 
   def New
@@ -67,8 +68,7 @@ end
   end
 
   def admin_user
-    @user = User.find(params[:id])
-    redirect_to(root_url) unless @user.admin?
+    redirect_to(root_url) unless current_user.admin?
   end
 
 end
