@@ -1,0 +1,40 @@
+<% provide(:title, 'Change your pronostiek') %>
+<h1>Change your pronostiek</h1>
+	<%= form_for(@betset) do |betset_fields| %>
+	<%= betset_fields.hidden_field :user_id, value: @user.id %>
+	<%= render 'shared/error_messages', object: betset_fields.object %>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Homeside</th>
+					<th>Awayside</th>
+					<th>Homescore</th>
+					<th>Awayscore</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%= betset_fields.fields_for :bets do |bet_fields| %>
+				<%= bet_fields.hidden_field :game_id, value: bet_fields.object.game.id %>
+					<tr>
+						<td>
+							<%= bet_fields.object.game.playdate %>
+						</td>
+						<td>
+							<%= bet_fields.object.game.homeside %>
+						</td>
+						<td>
+							<%= bet_fields.object.game.awayside %>
+						</td>
+						<td>
+							<%= bet_fields.text_field :homescore %>
+						</td>
+						<td>
+							<%= bet_fields.text_field :awayscore %>
+						</td>
+					</tr>
+				<% end %>
+			</tbody>
+		</table>
+	<%= betset_fields.submit "Update", class: "btn btn-large btn-primary" %>
+	<% end %>

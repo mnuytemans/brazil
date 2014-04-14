@@ -14,16 +14,29 @@ class GamesController < ApplicationController
   	else
   		redirect_to games_path
   	end
-
   end
 
   def new
   	@game = Game.new
   end
 
+  def show
+    @games = Game.all
+  end
+
+  def update
+    @game = Game.find(params[:id])
+    if @game.update_attributes(game_params)
+      flash[:success] = "Profile updated"
+      redirect_to 'games#show'
+    else
+      render 'show'
+    end
+  end
+
   private
   	def game_params
-  		params.require(:game).permit(:homeside, :awayside, :playdate, :group)
+  		params.require(:game).permit(:homeside, :awayside, :playdate, :group, :homescore, :awayscore)
   	end
 
   	def admin_user	

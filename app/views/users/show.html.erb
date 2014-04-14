@@ -1,5 +1,3 @@
-
-
 <% provide(:title, @user.name) %>
 <div class="row">
   <aside class="span4">
@@ -8,8 +6,16 @@
         <%= @user.name %>
       </h1>
     </section>
+    <section>
+      <%= link_to "Change your pronostiek", edit_betset_path(@user.betset.id) %>
+    </section>
   </aside>
   <div class="span8">
-	<%= render 'games/groups' %>
+    <h1>My pronostiek</h1>
+  <% if !@user.betset.nil? %>
+	   <%= render 'games/groups' %>
+  <% else %>
+     <%= link_to "Create your pronostiek here", new_betset_path, class: "btn btn-primary btn-large" %>
+  <% end %> 
   </div>
 </div>

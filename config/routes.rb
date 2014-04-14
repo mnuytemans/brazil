@@ -1,10 +1,13 @@
 Brazil::Application.routes.draw do
-  get "games/new"
+  
+  
   resources :users, :games
   resources :sessions, only: [:new, :create, :destroy]
+  resources :betsets, only: [:new, :create, :edit, :update]
+
   root  'static_pages#home'
   match '/signup', to: 'users#New', via: 'get'
-  
+  match '/participate', to: 'betsets#new', via: 'get'
   match '/help', to: 'static_pages#help', via: 'get'
   
   match '/about', to: 'static_pages#about', via: 'get'

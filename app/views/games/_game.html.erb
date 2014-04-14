@@ -9,9 +9,17 @@
 		<%= game.awayside %>
 	</td>
 	<td>
-		<%= game.homescore %>
+		<% if !@bet.nil? %>
+ 		<%= @bet.homescore %>
 	</td>
 	<td>
-		<%= game.awayscore %>
-	</td>
+		<%= @bet.awayscore %>	
+		<% else %>
+ 		<%= game.homescore %>
+ 	</td>
+ 	<td>
+ 		<%= game.awayscore %>
+
+ 		<% end %>
+ 	</td>
 </tr>

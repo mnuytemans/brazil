@@ -11,18 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410120545) do
+ActiveRecord::Schema.define(version: 20140410230109) do
 
   create_table "bets", force: true do |t|
     t.integer  "homescore"
     t.integer  "awayscore"
-    t.integer  "user_id"
+    t.integer  "betset_id"
     t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "bets", ["user_id", "game_id"], name: "index_bets_on_user_id_and_game_id", unique: true
+  add_index "bets", ["betset_id", "game_id"], name: "index_bets_on_betset_id_and_game_id", unique: true
+
+  create_table "betsets", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "betsets", ["user_id"], name: "index_betsets_on_user_id", unique: true
 
   create_table "games", force: true do |t|
     t.string   "homeside"
