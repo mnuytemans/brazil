@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
 	
 	has_one :betset
+	has_one :betjoker
 	has_many :bets, :through => :betset
 	has_many :games, :through => :bets
+	has_many :bettables
 
 	before_save { self.email = email.downcase }
 	before_create :create_remember_token

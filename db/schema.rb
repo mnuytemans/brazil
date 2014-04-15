@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140410230109) do
+ActiveRecord::Schema.define(version: 20140415100009) do
+
+  create_table "betjokers", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "country_id"
+    t.integer  "round_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "bets", force: true do |t|
     t.integer  "homescore"
@@ -32,6 +40,29 @@ ActiveRecord::Schema.define(version: 20140410230109) do
 
   add_index "betsets", ["user_id"], name: "index_betsets_on_user_id", unique: true
 
+  create_table "bettables", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "round_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bettables_countries", id: false, force: true do |t|
+    t.integer "bettable_id"
+    t.integer "country_id"
+  end
+
+  create_table "countries", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "countries_tables", id: false, force: true do |t|
+    t.integer "country_id"
+    t.integer "table_id"
+  end
+
   create_table "games", force: true do |t|
     t.string   "homeside"
     t.string   "awayside"
@@ -45,6 +76,19 @@ ActiveRecord::Schema.define(version: 20140410230109) do
 
   add_index "games", ["group"], name: "index_games_on_group"
   add_index "games", ["playdate"], name: "index_games_on_playdate"
+
+  create_table "rounds", force: true do |t|
+    t.string   "name"
+    t.integer  "teams"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tables", force: true do |t|
+    t.integer  "round_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "name"
