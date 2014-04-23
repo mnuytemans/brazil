@@ -1,0 +1,11 @@
+<% provide(:title, 'Next round contenders') %>
+<h1>Who's going to be in the <%= @next_bet_round.name %>?</h1>
+	<%= form_for @next_bettable do |f| %>
+		<%= f.hidden_field :user_id, value: current_user.id %>
+		<%= f.hidden_field :round_id, value: @next_bet_round.id %>
+		<%= render 'shared/error_messages', object: f.object %>
+		<% for i in 0..@next_bet_round.teams-1 do %>
+			<%= collection_select(:bettable, "country_ids[" + i.to_s + "]", @next_bet_countries, :id, :name) %>
+		<% end %>
+	<%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+	<% end %>

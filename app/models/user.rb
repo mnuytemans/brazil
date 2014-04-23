@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 	has_one :betjoker
 	has_many :bets, :through => :betset
 	has_many :games, :through => :bets
+	has_many :rounds, :through => :bettables
 	has_many :bettables
 
 	before_save { self.email = email.downcase }
@@ -25,6 +26,60 @@ class User < ActiveRecord::Base
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
+	# Returns the status on all the bets of the user
+	def bet_status
+		@betstatus = {"Completed" => true, "Betset" => true, "Bettable" => {}, "Bettable Status" => true, "Joker" => true}
+		betrounds = Round.all.sort {|a,b| b.teams <=> a.teams}
+					
+		if betset.nil?
+			@betstatus["Betset"] = false
+			@betstatus["Completed"] = false
+		end
+
+		betrounds.each do |x|
+			if !bettables.find_by(round_id: x.id).nil?
+				@betstatus["Bettable"][x.id] = true
+			else
+				@betstatus["Bettable"][x.id] = false
+				@betstatus["Completed"] = false
+				@betstatus["Bettable Status"] = false
+			end
+		end
+
+		if betjoker.nil?
+			@betstatus["Joker"] = false
+			@betstatus["Completed"] = false
+		end
+
+		return @betstatus
+	end
+
+	# Method that returns the round_id of the next bet round
+	def next_bet_round
+		if @betstatus.nil?
+			self.bet_status
+		end
+		next_rounds = @betstatus["Bettable"].select{|key, value| value == false}
+		return next_rounds.keys.first
+	end
+
+	# Method that returns the available countries for the next Bet round
+	def next_bet_countries
+		if @betstatus.nil?
+			self.bet_status
+		end
+		
+		previous_rounds = @betstatus["Bettable"].select{|key, value| value == true}
+		
+		if !previous_rounds.empty?
+			last_round = previous_rounds.keys.last
+			last_countries = bettables.find_by(round_id: last_round).countries.to_a
+		else
+			last_countries = Country.all
+		end
+
+		return last_countries
+	end
 
 	private
 		def create_remember_token

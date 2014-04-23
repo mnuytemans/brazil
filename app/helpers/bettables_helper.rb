@@ -1,0 +1,2 @@
+module BettablesHelper
+end

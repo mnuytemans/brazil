@@ -1,0 +1,10 @@
+<% provide(:title, 'Update Round results') %>
+<h1>Results for the <%= @round.name %>?</h1>
+	<%= form_for @table do |f| %>
+			<%= f.hidden_field :round_id, value: @round.id %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<% for i in 0..@round.teams-1 do %>
+				<%= collection_select(:tables, "country_ids[" + i.to_s + "]", @countries, :id, :name) %>
+			<% end %>
+		<%= f.submit "Update", class: "btn btn-large btn-primary" %>
+	<% end %>

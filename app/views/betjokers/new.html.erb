@@ -1,0 +1,16 @@
+<% provide(:title, 'What is your joker?') %>
+<h1>Select your Joker</h1>
+<% @bettables.each do |bettable| %>
+	<h2><%= bettable.round.name %></h2>
+	<% bettable.countries.each do |country| %>
+		<p>
+			<%= country.name %>
+			<%= form_for @betjoker do |f| %>
+				<%= f.hidden_field :user_id, value: current_user.id %>
+				<%= f.hidden_field :round_id, value: bettable.round.id %>
+				<%= f.hidden_field :country_id, value: country.id %>
+			<%= f.submit "Joker This", class: "btn btn-large btn-primary" %>
+			<% end %>
+		</p>
+	<% end %>
+<% end %>
