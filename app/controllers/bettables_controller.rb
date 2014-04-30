@@ -1,18 +1,26 @@
 class BettablesController < ApplicationController
   before_action :signed_in_user, only: [:new, :create, :edit, :update]
-  before_action :correct_user, only: [:edit, :update]
   
   def New
-    @next_bet_round = Round.find_by(id: current_user.next_bet_round)
-    @next_bet_countries = current_user.next_bet_countries
-    @next_bettable = current_user.bettables.new(round_id: @next_bet_round.id)
+    if current_user.next_bet_round
+      @next_bet_round = Round.find_by(id: current_user.next_bet_round)
+      @next_bet_countries = current_user.next_bet_countries
+      @next_bettable = current_user.bettables.new(round_id: @next_bet_round.id)
+    else
+      flash[:error] = "All rounds entered"
+      redirect_to root_url
+    end
   end
 
-  def Edit
-  	# Get correct bettable
-  	# Show bettable
-  	# Calculate List of available countries
-  	# Allows the update
+  def edit
+    if @next_bet_round = Round.find(params[:id])
+      @next_bettable = Bettable.find_by(round_id: params[:id], user_id: current_user)
+    	@next_bet_countries = current_user.bet_countries(params[:id])
+      render 'New'
+    else
+      flash[:error] = "No Bettable found for this Round"
+      redirect_to root_url
+    end
   end
 
   def create
@@ -42,10 +50,5 @@ class BettablesController < ApplicationController
     params.require(:bettable).permit(:user_id,:round_id, :country_ids)
   end
 
-  def correct_user
-      @bettable = Betset.find(params[:id])
-      @user = @betset.user
-      redirect_to(root_url) unless current_user?(@user)
-  end
 
 end

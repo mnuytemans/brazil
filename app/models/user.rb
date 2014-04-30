@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
 		return @betstatus
 	end
 
-	# Method that returns the round_id of the next bet round
+	# Method that returns the round_id of the next Bet round
 	def next_bet_round
 		if @betstatus.nil?
 			self.bet_status
@@ -80,6 +80,25 @@ class User < ActiveRecord::Base
 
 		return last_countries
 	end
+
+	def bet_countries(round)
+		if @betstatus.nil?
+			self.bet_status
+		end
+
+		previous_bet_round_index = @betstatus["Bettable"].keys.index(round.to_i) -1
+
+		if previous_bet_round_index > 0 
+			last_round = @betstatus["Bettable"].keys[previous_bet_round_index]
+			last_countries = bettables.find_by(round_id: last_round).countries.to_a
+		else
+			last_countries = Country.all
+		end
+
+		return last_countries
+
+	end
+
 
 	private
 		def create_remember_token

@@ -2,8 +2,8 @@ namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
     
-    User.create(name: "Michiel Nuytemans", email: "michiel.nuytemans@gmail.com", password: "13paps", password_confirmation: "13paps")
-    User.find(1).admin = true
+    user = User.create(name: "Michiel Nuytemans", email: "michiel.nuytemans@gmail.com", password: "13paps", password_confirmation: "13paps")
+    user.toggle!(:admin)
 
     32.times do |n|
       country = Faker::Address.country
@@ -18,14 +18,10 @@ namespace :db do
     5.times do |n|
       homeside = Faker::Name.name
       awayside = Faker::Name.name
-      homescore = Faker::Number.number(1) 
-      awayscore = Faker::Number.number(1)
       playdate = Date.tomorrow+n
       group = "A"
       Game.create(homeside: homeside,
                   awayside: awayside,
-                  homescore: homescore,
-                  awayscore: awayscore,
                   playdate: playdate,
                   group: group)
     end
@@ -33,14 +29,10 @@ namespace :db do
     5.times do |n|
       homeside = Faker::Name.name
       awayside = Faker::Name.name
-      homescore = Faker::Number.number(1) 
-      awayscore = Faker::Number.number(1)
       playdate = Date.tomorrow+n
       group = "B"
       Game.create(homeside: homeside,
                   awayside: awayside,
-                  homescore: homescore,
-                  awayscore: awayscore,
                   playdate: playdate,
                   group: group)
     end
@@ -48,14 +40,10 @@ namespace :db do
     5.times do |n|
       homeside = Faker::Name.name
       awayside = Faker::Name.name
-      homescore = Faker::Number.number(1) 
-      awayscore = Faker::Number.number(1)
       playdate = Date.tomorrow+n
       group = "C"
       Game.create(homeside: homeside,
                   awayside: awayside,
-                  homescore: homescore,
-                  awayscore: awayscore,
                   playdate: playdate,
                   group: group)
     end
