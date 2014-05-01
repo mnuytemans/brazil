@@ -7,11 +7,73 @@
       </h1>
     </section>
     <section>
-      <%= link_to "Change your pronostiek", edit_betset_path(@user.betset.id) %>
+      
     </section>
   </aside>
   <div class="span8">
-    <h1>My pronostiek</h1>
+    <h1>Daclub <br><small>World Cup 2014 Pronostiek</small></h1>
+    <div class="row">
+      <h3>Step 1 : Fill out game score</h3>
+        <% if @betstatus["Betset"] %>
+          <p>Status: <span class="label label-success">Completed</span> <%= link_to "View", betset_path(@user.betset.id) %> | <%=link_to "Edit", edit_betset_path(@user.betset.id) %> </p>
+        <% else %>
+          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "Complete here", new_betset_path %></p>
+        <% end %>
+    </div>
+    <div class ='row'>
+      <h3>Step 2 : Fill out standings</h3>
+        <% # Round bets are not completed or Betjoker is not completed %>
+        <% if !@betstatus['Bettable Status'] || !@betstatus['Joker'] %>
+          <% # Global status is Incomplete and link is added to complete it %>
+          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "Complete here", bettables_New_path %> | <%= link_to "Restart", bettables_New_path %></p>
+            <ol class="rounds">
+              <% # Go through all the Rounds and mark them as completed or incomplete %>
+              <% Round.all.each do |round| %>
+               <li>
+                <% # Not completed round %>
+                <% if @betstatus["Bettable"][round.id] %><%= round.name %>:
+                  <span class="label label-success">Completed</span>
+                <% else %>
+                <% # Completed round %>
+                  <%= round.name %>:
+                  <% if round.previous %>
+                    <% if @betstatus["Bettable"][round.previous.id] %>
+                      <span class="label label-danger">Ongoing</span>
+                    <% else %>
+                      <span class="label label-default">Incomplete</span>
+                    <% end %>
+                  <% else %>
+                    <span class="label label-default">Incomplete</span>
+                  <% end %>
+                <% end %>
+              </li>
+              <% end %>
+              <li>Joker
+                <% if @betstatus["Bettable Status"] %>
+                  <span class="label label-danger">Completed</span>
+                <% else %>
+                  <span class="label label-default">Incomplete</span> 
+                <% end %>
+            </ol>
+        <% # Round bets are completed and Betjoker is completed %>
+        <% else %>
+          <p>Status: <span class="label label-success">Complete</span></p>
+            <ol class="rounds">
+              <% Round.all.each do |round| %>
+               <li><span class="label label-success"><%= round.name %>:</span></li>
+              <% end %>
+            </ol>
+        <% end %>
+
+
+    </div>
+    <div class='row'>
+      <h3>Step 3: Wait for the deadline</h3>
+      <p> Your pronostiek will automatically be finalized at the deadline</p>
+    </div>
+
+
+
   <% if !@user.betset.nil? %>
 	   <%= render 'games/groups' %>
   <% else %>
