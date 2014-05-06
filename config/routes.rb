@@ -1,13 +1,16 @@
 Brazil::Application.routes.draw do
   
   
+  get "settings/index"
   get "tables/new"
   get "tables/edit"
   get "bettables/New"
   get "bettables/Edit"
   resources :users, :games
   resources :sessions, only: [:new, :create, :destroy]
-  resources :betsets, :bettables, :betjokers, :tables, only: [:new, :create, :edit, :update]
+  resources :betsets, :betjokers, :tables, only: [:new, :create, :edit, :update, :show]
+  resources :bettables, only: [:new, :create, :edit, :update, :destroy, :show]
+  resources :settings, only: [:index, :update, :edit]
 
 
   root  'static_pages#home'

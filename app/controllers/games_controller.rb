@@ -26,9 +26,10 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
+    @games = Game.all
     if @game.update_attributes(game_params)
-      flash[:success] = "Profile updated"
-      redirect_to 'games#show'
+      flash[:success] = "Game score added"
+      redirect_to game_path
     else
       render 'show'
     end

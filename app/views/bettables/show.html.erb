@@ -1,0 +1,33 @@
+<% provide(:title, @user.name) %>
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= @user.name %>
+      </h1>
+    </section>
+    <section>
+      
+    </section>
+  </aside>
+  <div class="span8">
+	<% if @bettable %>
+    <% team_number = @bettable.round.teams %>
+    <% row_number = team_number / 4 %>
+    <% i = 0 %>
+    <table class="table">
+      <tr>
+        <td rowspan="<%= row_number %>"><%= @bettable.round.name %></td>
+        <% @bettable.countries.each do |country| %>
+          <% if i<4
+            i+=1
+          else
+            i = 1 %></tr>
+            <tr>
+          <% end %>
+            <td><%= country.name %></td>
+        <% end %>
+      </table>
+  <% end %> 
+  </div>
+</div>

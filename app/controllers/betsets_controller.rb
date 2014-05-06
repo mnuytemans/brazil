@@ -1,7 +1,7 @@
 class BetsetsController < ApplicationController
   before_action :signed_in_user, only: [:new, :create, :edit, :update]
   before_action :duplicate_betset, only: [:new]
-  before_action :correct_user, only: [:edit, :update]
+  before_action :correct_user, only: [:edit, :update, :show]
 
 
   def new
@@ -21,6 +21,11 @@ class BetsetsController < ApplicationController
   	else
       render 'new'
   	end
+  end
+
+  def show
+    @betset = Betset.find(params[:id])
+    @games = Game.all
   end
 
   def edit

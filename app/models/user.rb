@@ -2,10 +2,10 @@ class User < ActiveRecord::Base
 	
 	has_one :betset
 	has_one :betjoker
-	has_many :bets, :through => :betset
+	has_many :bets, :through => :betset, dependent: :destroy
 	has_many :games, :through => :bets
 	has_many :rounds, :through => :bettables
-	has_many :bettables
+	has_many :bettables, dependent: :destroy
 
 	before_save { self.email = email.downcase }
 	before_create :create_remember_token

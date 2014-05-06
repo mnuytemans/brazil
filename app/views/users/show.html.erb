@@ -25,14 +25,14 @@
         <% # Round bets are not completed or Betjoker is not completed %>
         <% if !@betstatus['Bettable Status'] || !@betstatus['Joker'] %>
           <% # Global status is Incomplete and link is added to complete it %>
-          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "Complete here", bettables_New_path %> | <%= link_to "Restart", bettables_New_path %></p>
+          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "Complete here", bettables_New_path %> | <%= link_to "Restart", bettable_path,   method: :delete, data: { confirm: "Are you sure to start over?"} %></p>
             <ol class="rounds">
               <% # Go through all the Rounds and mark them as completed or incomplete %>
               <% Round.all.each do |round| %>
                <li>
                 <% # Not completed round %>
                 <% if @betstatus["Bettable"][round.id] %><%= round.name %>:
-                  <span class="label label-success">Completed</span>
+                  <span class="label label-success">Completed</span> <%= link_to "View", bettable_path(round.id) %>
                 <% else %>
                 <% # Completed round %>
                   <%= round.name %>:
@@ -50,18 +50,17 @@
               <% end %>
               <li>Joker
                 <% if @betstatus["Bettable Status"] %>
-                  <span class="label label-danger">Completed</span>
-                <% else %>
                   <span class="label label-default">Incomplete</span> 
                 <% end %>
             </ol>
         <% # Round bets are completed and Betjoker is completed %>
         <% else %>
-          <p>Status: <span class="label label-success">Complete</span></p>
+          <p>Status: <span class="label label-success">Complete</span> <%= link_to "Restart", bettable_path,   method: :delete, data: { confirm: "Are you sure to start over?"} %></p>
             <ol class="rounds">
               <% Round.all.each do |round| %>
-               <li><span class="label label-success"><%= round.name %>:</span></li>
+               <li><%= round.name %>: <span class="label label-success">Completed</span> <%= link_to "View", bettable_path(round.id) %></li>
               <% end %>
+                <li>Joker: <span class="label label-success">Completed</span>
             </ol>
         <% end %>
 
@@ -74,10 +73,6 @@
 
 
 
-  <% if !@user.betset.nil? %>
-	   <%= render 'games/groups' %>
-  <% else %>
-     <%= link_to "Create your pronostiek here", new_betset_path, class: "btn btn-primary btn-large" %>
-  <% end %> 
+
   </div>
 </div>

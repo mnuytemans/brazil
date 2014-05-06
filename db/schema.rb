@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423165851) do
+ActiveRecord::Schema.define(version: 20140506155945) do
 
   create_table "betjokers", force: true do |t|
     t.integer  "user_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20140423165851) do
     t.integer  "round_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score"
+    t.boolean  "scored"
   end
 
   create_table "bets", force: true do |t|
@@ -28,6 +30,8 @@ ActiveRecord::Schema.define(version: 20140423165851) do
     t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "scored"
+    t.integer  "score"
   end
 
   add_index "bets", ["betset_id", "game_id"], name: "index_bets_on_betset_id_and_game_id", unique: true
@@ -45,6 +49,8 @@ ActiveRecord::Schema.define(version: 20140423165851) do
     t.integer  "round_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score"
+    t.boolean  "scored"
   end
 
   create_table "bettables_countries", id: false, force: true do |t|

@@ -1,0 +1,14 @@
+<% provide(:title, 'Settings') %>
+<h1>Settings</h1>
+<table class="table">
+<% @settings.each do |setting| %>
+	<tr>
+		<%= form_for(setting) do |f| %>
+			<%= render 'shared/error_messages', object: f.object %>
+			<td><%= f.object.name %> :</td>
+			<td><%= f.text_field :value %></td>
+			<td><%= f.submit "Update", class: "btn btn-large btn-primary" %></td>
+		<% end %>
+	</tr>
+<% end %>
+</table>
