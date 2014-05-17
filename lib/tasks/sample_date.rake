@@ -1,7 +1,9 @@
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
-
+    
+    require 'net/http'
+    
     # Create the rounds 
       Round.create(name: "16de Finale", teams: 16)
       Round.create(name: "Kwartfinale", teams: 8)
