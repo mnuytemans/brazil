@@ -40,5 +40,13 @@ module SessionsHelper
     	session.delete(:return_to)
   	end
 
+  	def open?
+  		status = Setting.find_by(name: "Status").value
+  		if status == 0 
+  			return true
+  		else
+  			return false
+  		end
+  	end
 
 end

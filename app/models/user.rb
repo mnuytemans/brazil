@@ -99,6 +99,30 @@ class User < ActiveRecord::Base
 
 	end
 
+	def update_score
+		score = 0
+		if @betstatus.nil?
+			self.bet_status
+		end
+		if @betstatus["Completed"]
+			
+			self.bets.where(scored: true).all.each do |bet|
+				score += bet.score
+			end
+			self.bettables.where(scored:true).all.each do |bettable|
+				score += bettable.score
+			end
+			if self.betjoker.scored
+				score += self.betjoker.score
+			end
+		end
+		self.update_attribute(:score, score.to_i)
+	end
+
+	def get_score
+		return self.score
+	end
+
 
 	private
 		def create_remember_token

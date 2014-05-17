@@ -8,9 +8,14 @@ class UsersController < ApplicationController
   end
 
   def show
-  	@user = User.find(params[:id])
-    @games = Game.all
-    @betstatus = @user.bet_status
+    if open?
+      @user = current_user
+    else
+      @user = User.find(params[:id])
+    end
+      @games = Game.all
+      @betstatus = @user.bet_status
+      @bettables = @user.bettables
   end
 
   def New
@@ -20,6 +25,9 @@ class UsersController < ApplicationController
   def create
   	@user = User.new(user_params)
   	if @user.save
+      if User.count == 1 
+        @user.toggle!(:admin)
+      end
       sign_in @user
   		flash[:success] = "Welcome to the Sample App!"
   		redirect_to '/participate'

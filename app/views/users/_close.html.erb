@@ -1,0 +1,19 @@
+
+<div class="row">
+  <aside class="span4">
+    <section>
+      <h1>
+        <%= @user.name %>
+      </h1>
+    </section>
+    <section>
+    	<ul>
+    		<li>Score: <%= @user.get_score %></li>
+    		<li>Ranking</li>
+    	</ul>
+    </section>
+  </aside>
+  <div class="span8">
+  	<%= render 'games/results' %>
+  </div>
+</div>

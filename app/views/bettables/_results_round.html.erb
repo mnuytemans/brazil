@@ -1,0 +1,30 @@
+    <% team_number = bettable.round.teams %>
+    <% row_number = team_number / 4 %>
+    <% i = 0 %>
+    <tr>
+        <td rowspan="<%= row_number %>"><h2><%= bettable.round.name %></h2><b>Score: <%= bettable.score %></b></td>
+        <% bettable.countries.each do |country| %>
+          <% if i<4
+            i+=1
+          else
+            i = 1 %></tr>
+            <tr>
+          <% end %>
+            <td>
+              
+              <% if Table.exists?(round_id: bettable.round.id) %>
+                <% if Table.where(round_id: bettable.round.id).first.countries.exists?(country.id) %>
+                  <b><%= country.name %></b>
+                  <% else %>
+                  <%= country.name %>
+                <% end %>
+              <% else %>
+                <%= country.name %>
+              <% end %>
+              <% if Betjoker.exists?(round_id: bettable.round.id, country_id: country.id, user_id: bettable.user.id) %>
+                (Joker!)
+                <% end %>
+
+
+            </td>
+        <% end %>

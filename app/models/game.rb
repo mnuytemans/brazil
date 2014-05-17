@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-	after_save :calculate_score
+	after_update :calculate_score
 
 	has_many :bets
 	has_many :users, :through => :bets
@@ -12,9 +12,9 @@ class Game < ActiveRecord::Base
 	
 
 	def calculate_score
-		score_exact = Setting.find_by(name: "Exact Score") 
-		score_correct = Setting.find_by(name: "Correct Score")
-		score_fail = Setting.find_by(name: "Incorrect Score")
+		score_exact = Setting.find_by(name: "Exact Score").value
+		score_correct = Setting.find_by(name: "Correct Score").value
+		score_fail = Setting.find_by(name: "Incorrect Score").value
 
 
 		if !self.homescore.nil? && !self.awayscore.nil?
@@ -32,6 +32,7 @@ class Game < ActiveRecord::Base
 					score = score_fail
 				end
 				bet.set_score(score)
+				bet.betset.user.update_score
 			end 
 		end
 	end

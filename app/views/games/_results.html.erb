@@ -1,0 +1,41 @@
+<h1>Game Results</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Group</th>
+				<th>Date</th>
+				<th>Homeside</th>
+				<th>Awayside</th>
+				<th>Bet</th>
+				<th>Result</th>
+				<th>Score</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @games.order(playdate: :asc).each do |game|%>
+			<% @bet = Bet.find_by(game_id: game.id, betset_id: @user.betset.id) %>
+				<%= render 'games/results_game', :game => game %>
+			<% end %>
+		</tbody>
+	</table>
+
+<h1>Round Results</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Round</th>
+				<th column-span="4">Teams</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @rounds = Round.all %>
+			<% @rounds.each do |round | %>
+				<% @bettable = Bettable.where(round_id: round.id, user_id: @user.id).first %>
+				<% if !@bettable.nil? %>
+				<%= render 'bettables/results_round', :bettable => @bettable %>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>
+
+

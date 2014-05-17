@@ -22,6 +22,7 @@ class Table < ActiveRecord::Base
 			end
 			# Set score of the bettable as the sum of all scores of each country in the bettable
 			bettable.set_score(score)
+			bettable.user.update_score
 		end
 
 		# Loop over betjokers
@@ -31,6 +32,7 @@ class Table < ActiveRecord::Base
 					betjoker.set_score(round_score)
 				else
 					betjoker.set_score(0)
+					betjoker.user.update_score
 				end
 			end
 		end
