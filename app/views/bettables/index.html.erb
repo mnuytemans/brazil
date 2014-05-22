@@ -1,0 +1,19 @@
+
+<h1>Round Results</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Round</th>
+				<th column-span="4">Teams</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% @rounds = Round.all %>
+			<% @rounds.each do |round | %>
+				<% @bettable = Bettable.where(round_id: round.id, user_id: @user.id).first %>
+				<% if !@bettable.nil? %>
+				<%= render 'bettables/results_round', :bettable => @bettable %>
+				<% end %>
+			<% end %>
+		</tbody>
+	</table>

@@ -1,5 +1,10 @@
 class TablesController < ApplicationController
-  before_action :admin_user, only: [:index, :edit, :update]
+  before_action :signed_in_user, only: [:index, :edit, :update, :new, :create]
+  before_action :admin_user, only: [:index, :edit, :update, :new, :create]
+
+  def index
+    @rounds = Round.all
+  end
 
   def new
   	if params[:id]

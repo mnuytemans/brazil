@@ -1,22 +1,32 @@
 class User < ActiveRecord::Base
 	
+
+
 	has_one :betset
 	has_one :betjoker
 	has_many :bets, :through => :betset, dependent: :destroy
 	has_many :games, :through => :bets
 	has_many :rounds, :through => :bettables
 	has_many :bettables, dependent: :destroy
+	
 
 	before_save { self.email = email.downcase }
 	before_create :create_remember_token
+
+
 
 	# Validations
 	validates :name, presence: true, length: { maximum: 30 }
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 	validates :password, length: { minimum: 6 }
-	
+
+
+
+
 	has_secure_password
+
+
 
 	def User.new_remember_token
 		SecureRandom.urlsafe_base64
@@ -25,6 +35,8 @@ class User < ActiveRecord::Base
 	def User.hash(token)
 		Digest::SHA1.hexdigest(token.to_s)
 	end
+
+
 
 	# Returns the status on all the bets of the user
 	def bet_status
@@ -46,10 +58,11 @@ class User < ActiveRecord::Base
 			end
 		end
 
-		if betjoker.nil?
-			@betstatus["Joker"] = false
-			@betstatus["Completed"] = false
-		end
+		# Descoped for Betjoker
+		#if betjoker.nil?
+		#	@betstatus["Joker"] = false
+		#	@betstatus["Completed"] = false
+		#end
 
 		return @betstatus
 	end
@@ -112,8 +125,10 @@ class User < ActiveRecord::Base
 			self.bettables.where(scored:true).all.each do |bettable|
 				score += bettable.score
 			end
-			if self.betjoker.scored
-				score += self.betjoker.score
+			if self.betjoker
+				if self.betjoker.scored
+					score += self.betjoker.score
+				end
 			end
 		end
 		self.update_attribute(:score, score.to_i)

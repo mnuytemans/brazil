@@ -1,0 +1,21 @@
+<% provide(:title, 'All rounds') %>
+<h1>Round results</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Round</th>
+			<th column-span="4">Teams</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @rounds.each do |round | %>
+			<% @table = Table.where(round_id: round.id).first %>
+			<% if !@table.nil? %>
+				<%= render 'tables/results_round', :table => @table %>
+			<% else %>
+				<%= render 'tables/add_round', :round => round %>
+				<% break %>
+			<% end %>
+		<% end %>
+	</tbody>
+</table>

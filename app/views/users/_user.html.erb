@@ -1,6 +1,20 @@
-<li>
-  <%= link_to user.name, user %>
-  <% if current_user.admin? && !current_user?(user) %>
-  | <%= link_to 'delete', user, method: :delete, data: {confirm: 'Are you sure?'} %>
-  <% end %>
-</li>
+<tr>
+	<td>
+		<%= index+1%>
+	</td>
+	<td>
+		<% if current_user?(user) || !open? %>
+		  <%= link_to user.name, user %>
+		<% else %>
+		  <%= user.name %>
+		<% end %>
+	</td>
+	<td>
+		<%= user.get_score unless user.get_score.nil? %>
+	</td>
+	<td>
+		<% if current_user.admin? && !current_user?(user) %>
+			<%= link_to 'delete', user, method: :delete, data: {confirm: 'Are you sure?'} %>
+		<% end %>
+	</td>
+</tr>

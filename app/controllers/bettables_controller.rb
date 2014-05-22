@@ -1,15 +1,20 @@
 class BettablesController < ApplicationController
-  before_action :signed_in_user, only: [:new, :create, :edit, :update, :show]
+  before_action :signed_in_user, only: [:new, :create, :edit, :update, :show, :index]
   
+  def index
+    @user = current_user
+  end
+
   def New
     if current_user.next_bet_round
       @next_bet_round = Round.find_by(id: current_user.next_bet_round)
       @next_bet_countries = current_user.next_bet_countries
       @next_bettable = current_user.bettables.new(round_id: @next_bet_round.id)
-    elsif !current_user.bet_status["Joker"]
-      redirect_to new_betjoker_path
+    # Betjoker descoped
+    # elsif !current_user.bet_status["Joker"]
+    #  redirect_to new_betjoker_path
     else
-      flash[:error] = "All rounds entered"
+      flash[:success] = "All rounds entered"
       redirect_to root_url
     end
   end

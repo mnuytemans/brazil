@@ -1,6 +1,24 @@
 <% provide(:title, 'All users') %>
 <h1>All users</h1>
 
-<ul class="users">
-	<%= render @users %>
-</ul>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Ranking
+			</th>
+			<th>
+				Name
+			</th>
+			<th>
+				Score
+			</th>
+			<th>
+			</th>
+	</thead>
+	<tbody>
+	<% User.order('score DESC').each_with_index do |user, index| %>
+		<%= render user, :index => index %>
+	<% end %>
+</tbody>
+</table>

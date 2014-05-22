@@ -1,0 +1,14 @@
+	<% team_number = table.round.teams %>
+    <% row_number = team_number / 4 %>
+    <% i = 0 %>
+    <tr>
+        <td rowspan="<%= row_number %>"><h2><%= table.round.name %></h2><center><%= link_to "Edit", tables_new_path(:id => table.round.id) %></center></td>
+        <% table.countries.each do |country| %>
+          <% if i<4
+            i+=1
+          else
+            i = 1 %></tr>
+            <tr>
+          <% end %>
+            <td><%= country.name %></td>
+        <% end %>

@@ -9,7 +9,7 @@
     <section>
     	<ul>
     		<li>Score: <%= @user.get_score %></li>
-    		<li>Ranking</li>
+    		<li>Ranking: <%= User.order('score DESC').index(@user) +1 %></li>
     	</ul>
     </section>
   </aside>

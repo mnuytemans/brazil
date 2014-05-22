@@ -4,12 +4,13 @@ Brazil::Application.routes.draw do
   get "settings/index"
   get "tables/new"
   get "tables/edit"
+  get "tables/index"
   get "bettables/New"
   get "bettables/Edit"
   resources :users, :games
   resources :sessions, only: [:new, :create, :destroy]
-  resources :betsets, :betjokers, :tables, only: [:new, :create, :edit, :update, :show]
-  resources :bettables, only: [:new, :create, :edit, :update, :destroy, :show]
+  resources :betsets, :betjokers, :tables, only: [:new, :create, :edit, :update, :show, :index]
+  resources :bettables, only: [:new, :create, :edit, :update, :destroy, :show, :index]
   resources :settings, only: [:index, :update, :edit]
 
 
