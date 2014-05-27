@@ -1,5 +1,3 @@
-  
-
     <h1>Daclub <br><small>World Cup 2014 Pronostiek</small></h1>
     <div class="row">
       <h3>Step 1 : Fill out game score</h3>
@@ -14,7 +12,11 @@
         <% # Round bets are not completed or Betjoker is not completed %>
         <% if !@betstatus['Bettable Status'] || !@betstatus['Joker'] %>
           <% # Global status is Incomplete and link is added to complete it %>
-          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "View", bettables_path %> | <%= link_to "Continue", bettables_New_path %> | <%= link_to "Restart", bettable_path,   method: :delete, data: { confirm: "Are you sure to start over?"} %></p>
+          <p>Status: <span class="label label-default">Incomplete</span>
+          <% if @betstatus["Bettable"][1] %> <%= link_to "View", bettables_path %> | <%= link_to "Edit", bettables_Edit_path, data: { confirm: "Are you sure to edit the bets?"} %></p>
+          <% else %> <%= link_to "Complete here", bettables_New_path %></p>
+          <% end %>
+          <% if false %>        
             <ol class="rounds">
               <% # Go through all the Rounds and mark them as completed or incomplete %>
               <% Round.all.each do |round| %>
@@ -38,14 +40,18 @@
               </li>
               <% end %>
             </ol>
+            <% end %>
+
         <% # Round bets are completed and Betjoker is completed %>
         <% else %>
           <p>Status: <span class="label label-success">Complete</span> <%= link_to "View", bettables_path %> | <%= link_to "Restart", bettable_path,   method: :delete, data: { confirm: "Are you sure to start over?"} %></p>
+            <% if false %>
             <ol class="rounds">
               <% Round.all.each do |round| %>
                <li><%= round.name %>: <span class="label label-success">Completed</span> </li>
               <% end %>
             </ol>
+            <% end %>
         <% end %>
 
 

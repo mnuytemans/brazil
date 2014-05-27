@@ -1,11 +1,43 @@
 <% provide(:title, 'Next round contenders') %>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		$("form").validate();
+	})
+
+</script>
 <h1>Who's going to be in the <%= @next_bet_round.name %>?</h1>
 	<%= form_for @next_bettable do |f| %>
 		<%= f.hidden_field :user_id, value: current_user.id %>
 		<%= f.hidden_field :round_id, value: @next_bet_round.id %>
 		<%= render 'shared/error_messages', object: f.object %>
-		<% for i in 0..@next_bet_round.teams-1 do %>
-			<%= collection_select(@next_bettable.class.name.downcase, "country_ids[" + i.to_s + "]", @next_bet_countries, :id, :name) %>
+	<div class="row">
+		<div id="error_explanation">
+			<label for="country_ids[]" class="error"></span>
+	 	</div>
+	</div>
+<div class="row">
+
+
+	<% ("A".."H").each do |x| %>
+		<% countries = @next_bet_countries.where(group: x) %>
+		<% if !countries.first.nil? %>
+			<div class="span3">
+				<h2><%= "Group "+ x.to_s %></h2>
+				<ul>
+				<% countries.each do |country| %>
+					<li><%= check_box_tag 'country_ids[]', country.id, @next_bettable.countries.exists?(id: country.id) , required:false,  minlength: @next_bet_round.teams, maxlength: @next_bet_round.teams %>
+					<%= country.name %>
+				</li>
+				<% end %>
+			</ul>
+			</div>
 		<% end %>
+	<% end %>
+
+</div><div class="row">
+<div class="span2 offset5">
 	<%= f.submit "Submit", class: "btn btn-large btn-primary" %>
 	<% end %>
+</div>
+</div>

@@ -1,24 +1,119 @@
 <% provide(:title, 'All users') %>
-<h1>All users</h1>
+<h1>Players</h1>
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				Ranking
-			</th>
-			<th>
-				Name
-			</th>
-			<th>
-				Score
-			</th>
-			<th>
-			</th>
-	</thead>
-	<tbody>
-	<% User.order('score DESC').each_with_index do |user, index| %>
-		<%= render user, :index => index %>
+
+<div class="row">
+	<div class="span12">
+		<h2>Overzicht</h2>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>
+					Ranking
+				</th>
+				<th>
+					Name
+				</th>
+				<th>
+					Score
+				</th>
+				<th>
+				</th>
+		</thead>
+		<tbody>
+		<% User.order('score DESC').each_with_index do |user, index| %>
+			<%= render user, :index => index %>
+		<% end %>
+	</tbody>
+	</table>
+</div>
+</div>
+<hr>
+<% if !open? %>
+<div class="row">
+	<div class="span12">
+		<h2>Vorige wedstrijden</h2>
+		<% @prev_games = Game.where("playdate <= :today and homescore IS NOT null and awayscore IS NOT null", :today => Date.today).last(3) %>
+		<% if !@prev_games.blank? %>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Game</th>
+						<th>Result</th>
+						<% User.all.each do %>
+						<% |user| %>
+						<th>
+							<%= user.name[0..2] %>
+						</th>
+						<% end %>
+					</tr>
+				</thead>
+				<% @prev_games.each do |game| %>
+				<tr>
+					<td><%= game.playdate %></td>
+					<td><%= game.homeside + " - " + game.awayside %></td>
+					<td><%= game.homescore.to_s + " - " + game.awayscore.to_s %></td>
+					<% User.all.each do %>
+					<% |user| %>
+					<% if !@bet.nil? %>
+					<% @bet = Bet.where(betset_id: Betset.where(user_id: user.id), game_id: game.id).first %>
+					<td>
+						<%= @bet.homescore.to_s + " - " + @bet.awayscore.to_s %>
+					</td>
+					<% else %>
+						<td>NA</td>
+
+
+					<% end %>
+					<% end %>
+				</tr>
+				<% end %>	
+			</table>
+		<% else %>
+			Geen wedstrijden gevonden !
+		<% end %>	
+	</div>
+	<div class="span12">
+		<h2>Volgende wedstrijden</h2>
+		<% !@next_games = Game.where("playdate >= :today and homescore IS null and awayscore IS null", :today => Date.today).first(3) %>
+		<% if !@next_games.blank? %>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Date</th>
+					<th>Game</th>
+					<% User.all.each do %>
+					<% |user| %>
+					<th>
+					<%= user.name[0..2] %>
+					</th>
+					<% end %>
+				</tr>
+			</thead>
+			<% @next_games.each do |game| %>
+				<tr>
+					<td><%= game.playdate %></td>
+					<td><%= game.homeside + " - " + game.awayside %></td>
+					<% User.all.each do %>
+					<% |user| %>
+
+						<% @bet = Bet.where(betset_id: Betset.where(user_id: user.id), game_id: game.id).first %>
+						<% if !@bet.nil? %>
+						<td>
+							<%= @bet.homescore.to_s + " - " + @bet.awayscore.to_s %>
+						</td>
+						<% else %>
+						<td>NA</td>
+						<% end %>
+					<% end %>
+				</tr>
+			<% end %>	
+		</table>
+		<% else %>
+			Geen wedstrijden gevonden !
+		<% end %>	
+
+	</div>
 	<% end %>
-</tbody>
-</table>
+</div>

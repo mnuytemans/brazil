@@ -1,5 +1,5 @@
 class BettablesController < ApplicationController
-  before_action :signed_in_user, only: [:new, :create, :edit, :update, :show, :index]
+  before_action :signed_in_user, only: [:new, :create, :edit, :update, :show, :index, :Edit]
   
   def index
     @user = current_user
@@ -36,6 +36,27 @@ class BettablesController < ApplicationController
     end
   end
 
+  def Edit
+    if !current_user.bettables.nil?
+      @deletables = current_user.bettables.where.not(round_id: Round.first.id)
+      @deletables.destroy_all unless @deletables.nil?
+      current_user.betjoker.destroy unless current_user.betjoker.nil?
+      redirect_to edit_bettable_path(Round.first.id)
+    end
+  end
+
+  def update
+    @bettable = current_user.bettables.find(params[:id])
+    @bettable.country_ids = params[:country_ids]
+    if @bettable.save
+      flash[:success] = "Bet for this round completed"
+      redirect_to bettables_New_path
+    else
+      flash[:error] = "Bet failed"
+      redirect_to bettables_New_path
+    end
+  end
+
   def destroy
     current_user.bettables.destroy_all unless current_user.bettables.nil?
     current_user.betjoker.destroy unless current_user.betjoker.nil?
@@ -44,7 +65,7 @@ class BettablesController < ApplicationController
 
   def create
      @bettable = current_user.bettables.new(bettable_params)
-     @bettable.country_ids = params[:bettable][:country_ids].values
+     @bettable.country_ids = params[:country_ids]
      if @bettable.save
       flash[:success] = "Bet for this round completed"
       redirect_to bettables_New_path

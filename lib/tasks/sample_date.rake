@@ -11,6 +11,9 @@ namespace :db do
       Round.create(name: "Finale", teams: 2)
       Round.create(name: "Wereldkampioen", teams: 1)
 
+    # Hash with the teams and groups
+    groups = {"A" => ["Brazil","Croatia","Mexico","Cameroon"], "B" => ["Spain","Netherlands","Chile","Australia"], "C" => ["Colombia","Greece","Côte d'Ivoire","Japan"] , "D" => ["Uruguay","Costa Rica","England","Italy"] , "E" => ["Switzerland","Ecuador","France","Honduras"] , "F" => ["Argentina","Bosnia-Herzegovina","Iran","Nigeria"], "G" => ["Germany","Portugal","Ghana","United States"], "H" => ["Belgium","Algeria","Russia","South Korea"]}
+
     # Create the teams
       uri = URI.parse("http://footballdb.herokuapp.com/api/v1/event/world.2014/teams/")
 
@@ -19,7 +22,8 @@ namespace :db do
       json_response = JSON.parse response.body
 
       for i in 0..json_response["teams"].count - 1
-        Country.create(name: json_response["teams"][i]["title"])
+        group =  groups.select{|key,value| value.index(json_response["teams"][i]["title"])}.keys[0]
+        Country.create(name: json_response["teams"][i]["title"], group: group)
       end
 
 
@@ -34,8 +38,10 @@ namespace :db do
         json_response = JSON.parse response.body
 
         for i in 0..json_response["games"].count - 1
+
+          group = groups.select{|key,value| value.index(json_response["games"][i]["team1_title"])}.keys[0]
           Game.create(homeside: json_response["games"][i]["team1_title"] , awayside: json_response["games"][i]["team2_title"], 
-            playdate: json_response["games"][i]["play_at"], group: "A" )
+            playdate: json_response["games"][i]["play_at"], group: group )
         end
       end
 

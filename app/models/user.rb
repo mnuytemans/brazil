@@ -86,7 +86,7 @@ class User < ActiveRecord::Base
 		
 		if !previous_rounds.empty?
 			last_round = previous_rounds.keys.last
-			last_countries = bettables.find_by(round_id: last_round).countries.to_a
+			last_countries = bettables.find_by(round_id: last_round).countries
 		else
 			last_countries = Country.all
 		end

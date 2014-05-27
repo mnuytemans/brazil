@@ -13,9 +13,9 @@
 	</td>
 	<td>
 		<% if !@bet.nil? %>
- 		<%= @bet.homescore.to_s + "-" + @bet.awayscore.to_s %>	
+ 			<%= @bet.homescore.to_s + "-" + @bet.awayscore.to_s %>	
 		<% else %>
-		<%= "-" %>
+			<%= "-" %>
 		<% end %>
  	</td>
  	<td>
@@ -26,10 +26,14 @@
  		<% end %>
  	</td>
  	<td>
- 		<% if @bet.scored %>
- 				<%= @bet.score %>
-			<% else %>
-				<%= "-" %>	
+ 		<% if !@bet.nil? %>
+	 		<% if @bet.scored %>
+	 				<%= @bet.score %>
+				<% else %>
+					<%= "-" %>	
+			<% end %>
+		<% else %>
+			<%= "-" %>
 		<% end %>
 	</td>
 </tr>
