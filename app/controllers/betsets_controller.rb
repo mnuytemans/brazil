@@ -16,7 +16,7 @@ class BetsetsController < ApplicationController
     @betset = Betset.new(betset_params)
     @betset.update_attributes(:bets_attributes => params[:betset][:bets_attributes])
   	if @betset.save
-  		flash[:success] = "Pronostiek send correctly. You can still change it later."
+  		flash[:success] = "Pronostiek bewaard. Wijzigen nog steeds mogelijk."
   		redirect_to @current_user
   	else
       render 'new'
@@ -37,7 +37,7 @@ class BetsetsController < ApplicationController
     @betset = Betset.find(params[:id])
     @user = current_user
     if @betset.update_attributes(:bets_attributes => params[:betset][:bets_attributes])
-      flash[:success] = "Pronostiek updated"
+      flash[:success] = "Pronostiek gewijzigd."
       redirect_to @user
     else
       render 'edit'

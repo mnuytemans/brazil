@@ -1,18 +1,19 @@
 <% provide(:title, 'All users') %>
-<h1>Players</h1>
-
-
+<% if !open? %><h1>Tussenstand</h1>
+<% else %>
+<h1>Deelnemers</h1>
+<% end %>
 <div class="row">
 	<div class="span12">
-		<h2>Overzicht</h2>
+		
 	<table class="table">
 		<thead>
 			<tr>
 				<th>
-					Ranking
+					Positie
 				</th>
 				<th>
-					Name
+					Naam
 				</th>
 				<th>
 					Score
@@ -32,15 +33,15 @@
 <% if !open? %>
 <div class="row">
 	<div class="span12">
-		<h2>Vorige wedstrijden</h2>
-		<% @prev_games = Game.where("playdate <= :today and homescore IS NOT null and awayscore IS NOT null", :today => Date.today).last(3) %>
+		<h2>Recente wedstrijden</h2>
+		<% @prev_games = Game.where("playdate <= :today and homescore IS NOT null and awayscore IS NOT null", :today => Date.today).last(4) %>
 		<% if !@prev_games.blank? %>
 			<table class="table table-bordered">
 				<thead>
 					<tr>
-						<th>Date</th>
-						<th>Game</th>
-						<th>Result</th>
+						<th>Datum</th>
+						<th>Wedstrijd</th>
+						<th>Uitslag</th>
 						<% User.all.each do %>
 						<% |user| %>
 						<th>
@@ -56,15 +57,23 @@
 					<td><%= game.homescore.to_s + " - " + game.awayscore.to_s %></td>
 					<% User.all.each do %>
 					<% |user| %>
-					<% if !@bet.nil? %>
 					<% @bet = Bet.where(betset_id: Betset.where(user_id: user.id), game_id: game.id).first %>
-					<td>
+					<% if !@bet.nil? %>
+						<% if @bet.scored %>
+							<% if @bet.score == 0 %>
+								<td class="bad_result">
+							<% elsif @bet.score == 1 %>
+								<td class="ok_result">
+							<% elsif @bet.score > 1 %>
+								<td class="good_result">
+							<% end %>
+						<% else %>
+							<td>
+						<% end %>
 						<%= @bet.homescore.to_s + " - " + @bet.awayscore.to_s %>
 					</td>
 					<% else %>
-						<td>NA</td>
-
-
+						<td> - </td>
 					<% end %>
 					<% end %>
 				</tr>
@@ -74,15 +83,15 @@
 			Geen wedstrijden gevonden !
 		<% end %>	
 	</div>
+	<% @next_games = Game.where("playdate >= :today and homescore IS null and awayscore IS null", :today => Date.today).first(4) %>
+	<% if !@next_games.blank? %>
 	<div class="span12">
-		<h2>Volgende wedstrijden</h2>
-		<% !@next_games = Game.where("playdate >= :today and homescore IS null and awayscore IS null", :today => Date.today).first(3) %>
-		<% if !@next_games.blank? %>
+		<h2>Eerstvolgende wedstrijden</h2>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th>Date</th>
-					<th>Game</th>
+					<th>Datum</th>
+					<th>Wedstrijd</th>
 					<% User.all.each do %>
 					<% |user| %>
 					<th>
@@ -110,10 +119,76 @@
 				</tr>
 			<% end %>	
 		</table>
-		<% else %>
-			Geen wedstrijden gevonden !
-		<% end %>	
-
 	</div>
-	<% end %>
 </div>
+	<% #else %>
+	<% end %>
+	<% @prev_table = Table.last %>
+	<% if @prev_table %>
+		<% @next_round = Round.where("teams < ?", @prev_table.round.teams).first %>
+		<% @bettables = Bettable.where(round: @prev_table.round).order("user_id") %>
+		<div class="row"><div class="span12">
+			<h2>Uitslag <%= @prev_table.round.name %></h2>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Uitslag</th>
+					<% @bettables.each do %>
+						<% |bettable| %>
+						<th><%= bettable.user.name[0..2] %></th>
+					<% end %>
+				</tr>
+			</thead>
+			<% (1..@prev_table.round.teams).each do |i| %>
+				<tr>
+					<td><%= Country.find(@prev_table.countries.order("id").ids[i-1]).name %></td>
+					<% @bettables.each do |bettable| %>
+						<% country_id = bettable.countries.order("id").ids[i-1] %>
+						<% if @prev_table.countries.exists?(country_id) %>
+							<td class="good_result"%>
+						<% else %>
+							<td class="bad_result"%>
+						<% end %>	
+							<%= Country.find(country_id).name %>
+						</td>
+					<% end %>
+				</tr>
+			<% end %>
+		</table>
+		</div></div>
+	<% else @next_round = Round.first %>
+	<% end %>
+	<% if @next_round %>
+		<% @bettables = Bettable.where(round: @next_round) %>
+			<div class="row"><div class="span12">
+				<h2>Pronostiek <%= @next_round.name %></h2>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<% @bettables.each do %>
+							<% |bettable| %>
+							<th><%= bettable.user.name[0..2] %></th>
+						<% end %>
+					</tr>
+				</thead>
+				<% (1..@next_round.teams).each do |i| %>
+					<tr>
+						<% @bettables.each do |bettable| %>
+							<% country_id = bettable.countries.order("id").ids[i-1] %>
+							<td>
+								<%= Country.find(country_id).name %>
+							</td>
+						<% end %>
+					</tr>
+				<% end %>
+			</table>
+			</div></div>
+
+	<% end %>
+
+
+	
+
+	<% #end %>
+	
+	<% end %>	

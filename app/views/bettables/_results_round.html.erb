@@ -10,20 +10,20 @@
             i = 1 %></tr>
             <tr>
           <% end %>
-            <td>
+            
               
               <% if Table.exists?(round_id: bettable.round.id) %>
                 <% if Table.where(round_id: bettable.round.id).first.countries.exists?(country.id) %>
-                  <b><%= country.name %></b>
+                  <td class="good_result">
                   <% else %>
-                  <%= country.name %>
+                  <td class="bad_result">
                 <% end %>
               <% else %>
-                <%= country.name %>
+                <td>
               <% end %>
-              <% if Betjoker.exists?(round_id: bettable.round.id, country_id: country.id, user_id: bettable.user.id) %>
-                (Joker!)
-                <% end %>
+              <%= country.name %>
+              <% #if Betjoker.exists?(round_id: bettable.round.id, country_id: country.id, user_id: bettable.user.id) %>
+              <% #end %>
 
 
             </td>

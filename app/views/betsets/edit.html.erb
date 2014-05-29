@@ -1,16 +1,16 @@
 <% provide(:title, 'Change your pronostiek') %>
-<h1>Change your pronostiek</h1>
+<h1>Poulefase wijzigen</h1>
 	<%= form_for(@betset) do |betset_fields| %>
 	<%= betset_fields.hidden_field :user_id, value: @user.id %>
 	<%= render 'shared/error_messages', object: betset_fields.object %>
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Date</th>
-					<th>Homeside</th>
-					<th>Awayside</th>
-					<th>Homescore</th>
-					<th>Awayscore</th>
+					<th>Datum</th>
+					<th>Ploeg 1</th>
+					<th>Ploeg 2</th>
+					<th>Score Ploeg 1</th>
+					<th>Score Ploeg 2</th>
 				</tr>
 			</thead>
 			<tbody>

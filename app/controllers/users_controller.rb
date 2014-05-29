@@ -30,7 +30,7 @@ class UsersController < ApplicationController
         @user.toggle!(:admin)
       end
       sign_in @user
-  		flash[:success] = "Welcome to the Sample App!"
+  		flash[:success] = "Welkom!"
   		redirect_to '/participate'
   	else
   		render 'New'

@@ -1,20 +1,20 @@
-    <h1>Daclub <br><small>World Cup 2014 Pronostiek</small></h1>
+    <h1>Pronostiek WK 2014</h1>
     <div class="row">
-      <h3>Step 1 : Fill out game score</h3>
+      <h3>Stap 1: Voorspel de poulefase</h3>
         <% if @betstatus["Betset"] %>
-          <p>Status: <span class="label label-success">Completed</span> <%= link_to "View", betset_path(@user.betset.id) %> | <%=link_to "Edit", edit_betset_path(@user.betset.id) %> </p>
+          <p>Status: <span class="label label-success">Volledig</span> <%= link_to "Bekijk", betset_path(@user.betset.id) %> | <%=link_to "Wijzig", edit_betset_path(@user.betset.id) %> </p>
         <% else %>
-          <p>Status: <span class="label label-default">Incomplete</span> <%= link_to "Complete here", new_betset_path %></p>
+          <p>Status: <span class="label label-default">Onvolledig</span> <%= link_to "Vul aan", new_betset_path %></p>
         <% end %>
     </div>
     <div class ='row'>
-      <h3>Step 2 : Fill out standings</h3>
+      <h3>Stap 2: Voorspel de eindfase</h3>
         <% # Round bets are not completed or Betjoker is not completed %>
         <% if !@betstatus['Bettable Status'] || !@betstatus['Joker'] %>
           <% # Global status is Incomplete and link is added to complete it %>
-          <p>Status: <span class="label label-default">Incomplete</span>
-          <% if @betstatus["Bettable"][1] %> <%= link_to "View", bettables_path %> | <%= link_to "Edit", bettables_Edit_path, data: { confirm: "Are you sure to edit the bets?"} %></p>
-          <% else %> <%= link_to "Complete here", bettables_New_path %></p>
+          <p>Status: <span class="label label-default">Onvolledig</span>
+          <% if @betstatus["Bettable"][1] %> <%= link_to "Bekijk", bettables_path %> | <%= link_to "Wijzig", bettables_Edit_path, data: { confirm: "Ben je zeker? Indien je doorgaat, worden al je voorspellingen vanaf de kwartfinales gewist."} %></p>
+          <% else %> <%= link_to "Vul aan", bettables_New_path %></p>
           <% end %>
           <% if false %>        
             <ol class="rounds">
@@ -44,7 +44,7 @@
 
         <% # Round bets are completed and Betjoker is completed %>
         <% else %>
-          <p>Status: <span class="label label-success">Complete</span> <%= link_to "View", bettables_path %> | <%= link_to "Restart", bettable_path,   method: :delete, data: { confirm: "Are you sure to start over?"} %></p>
+          <p>Status: <span class="label label-success">Volledig</span> <%= link_to "Bekijk", bettables_path %> | <%= link_to "Wijzig", bettables_Edit_path, data: { confirm: "Ben je zeker? Indien je doorgaat, worden al je voorspellingen vanaf de kwartfinales gewist."} %></p>
             <% if false %>
             <ol class="rounds">
               <% Round.all.each do |round| %>
@@ -57,8 +57,8 @@
 
     </div>
     <div class='row'>
-      <h3>Step 3: Wait for the deadline</h3>
-      <p> Your pronostiek will automatically be finalized at the deadline</p>
+      <h3>Stap 3: Wacht op de deadline</h3>
+      <p> Je pronostiek wordt definitief bij het verstrijken van de deadline. <br>Vanaf dan heb je toegang tot de pronostiek van de andere deelnemers en de tussenstand.</p>
     </div>
 
 

@@ -5,9 +5,9 @@ namespace :db do
     require 'net/http'
     
     # Create the rounds 
-      Round.create(name: "16de Finale", teams: 16)
-      Round.create(name: "Kwartfinale", teams: 8)
-      Round.create(name: "Halve Finale", teams: 4)
+      Round.create(name: "8ste Finales", teams: 16)
+      Round.create(name: "Kwartfinales", teams: 8)
+      Round.create(name: "Halve Finales", teams: 4)
       Round.create(name: "Finale", teams: 2)
       Round.create(name: "Wereldkampioen", teams: 1)
 

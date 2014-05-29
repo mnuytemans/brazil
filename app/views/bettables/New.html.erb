@@ -6,7 +6,11 @@
 	})
 
 </script>
-<h1>Who's going to be in the <%= @next_bet_round.name %>?</h1>
+<% if @next_bet_round.teams == "1" %>
+		<h1>Wie wordt wereldkampioen?</h1>
+	<% else %>
+		<h1>Welke landen stoten door naar de <%= @next_bet_round.name %>?</h1>
+	<% end %>
 	<%= form_for @next_bettable do |f| %>
 		<%= f.hidden_field :user_id, value: current_user.id %>
 		<%= f.hidden_field :round_id, value: @next_bet_round.id %>
@@ -23,7 +27,7 @@
 		<% countries = @next_bet_countries.where(group: x) %>
 		<% if !countries.first.nil? %>
 			<div class="span3">
-				<h2><%= "Group "+ x.to_s %></h2>
+				<h2><%= "Groep "+ x.to_s %></h2>
 				<ul>
 				<% countries.each do |country| %>
 					<li><%= check_box_tag 'country_ids[]', country.id, @next_bettable.countries.exists?(id: country.id) , required:false,  minlength: @next_bet_round.teams, maxlength: @next_bet_round.teams %>
@@ -37,7 +41,7 @@
 
 </div><div class="row">
 <div class="span2 offset5">
-	<%= f.submit "Submit", class: "btn btn-large btn-primary" %>
+	<%= f.submit "Bevestigen", class: "btn btn-large btn-primary" %>
 	<% end %>
 </div>
 </div>

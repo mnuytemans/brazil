@@ -1,6 +1,7 @@
 Brazil::Application.routes.draw do
   
   
+  get "password_resets/new"
   get "settings/index"
   get "tables/new"
   get "tables/edit"
@@ -12,6 +13,7 @@ Brazil::Application.routes.draw do
   resources :betsets, :betjokers, :tables, only: [:new, :create, :edit, :update, :show, :index]
   resources :bettables, only: [:new, :create, :edit, :update, :destroy, :show, :index]
   resources :settings, only: [:index, :update, :edit]
+  resources :password_resets
 
 
   root  'static_pages#home'

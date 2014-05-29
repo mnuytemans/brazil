@@ -11,10 +11,21 @@
 	<td>
 		<%= game.awayside %>
 	</td>
-	<td>
-		<% if !@bet.nil? %>
- 			<%= @bet.homescore.to_s + "-" + @bet.awayscore.to_s %>	
+	<% if !@bet.nil? %>
+		<% if @bet.scored %>
+			<% if @bet.score == 0 %>
+				<td class="bad_result">
+			<% elsif @bet.score == 1 %>
+				<td class="ok_result">
+			<% elsif @bet.score > 1 %>
+				<td class="good_result">
+			<% end %>
 		<% else %>
+			<td>
+		<% end %>
+ 			<%= @bet.homescore.to_s + "-" + @bet.awayscore.to_s %>	
+	<% else %>
+		<td>
 			<%= "-" %>
 		<% end %>
  	</td>

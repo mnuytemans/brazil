@@ -14,7 +14,7 @@ class BettablesController < ApplicationController
     # elsif !current_user.bet_status["Joker"]
     #  redirect_to new_betjoker_path
     else
-      flash[:success] = "All rounds entered"
+      flash[:success] = "Eindfase volledig"
       redirect_to root_url
     end
   end
@@ -38,7 +38,7 @@ class BettablesController < ApplicationController
 
   def Edit
     if !current_user.bettables.nil?
-      @deletables = current_user.bettables.where.not(round_id: Round.first.id)
+      @deletables = current_user.bettables.where.not(round: Round.first)
       @deletables.destroy_all unless @deletables.nil?
       current_user.betjoker.destroy unless current_user.betjoker.nil?
       redirect_to edit_bettable_path(Round.first.id)
@@ -49,10 +49,10 @@ class BettablesController < ApplicationController
     @bettable = current_user.bettables.find(params[:id])
     @bettable.country_ids = params[:country_ids]
     if @bettable.save
-      flash[:success] = "Bet for this round completed"
+      flash[:success] = "Pronostiek bewaard."
       redirect_to bettables_New_path
     else
-      flash[:error] = "Bet failed"
+      flash[:error] = "Fout bij het verwerken van de pronostiek."
       redirect_to bettables_New_path
     end
   end
@@ -67,10 +67,10 @@ class BettablesController < ApplicationController
      @bettable = current_user.bettables.new(bettable_params)
      @bettable.country_ids = params[:country_ids]
      if @bettable.save
-      flash[:success] = "Bet for this round completed"
+      flash[:success] = "Pronostiek bewaard"
       redirect_to bettables_New_path
     else
-      flash[:error] = "Bet failed"
+      flash[:error] = "Fout bij het verwerken van de pronostiek."
       redirect_to bettables_New_path
   end
 

@@ -192,3 +192,20 @@ input {
     }
   }
 }
+
+/* Colour codes for results */
+    .good_result {
+      background-color: lightgreen;
+    }
+
+    .ok_result {
+      background-color: lightyellow;
+    }
+
+    .bad_result {
+      background-color: lightcoral;
+    }
+
+
+
+

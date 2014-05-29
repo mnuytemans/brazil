@@ -21,12 +21,7 @@ class User < ActiveRecord::Base
 	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 	validates :password, length: { minimum: 6 }
 
-
-
-
 	has_secure_password
-
-
 
 	def User.new_remember_token
 		SecureRandom.urlsafe_base64
@@ -36,6 +31,12 @@ class User < ActiveRecord::Base
 		Digest::SHA1.hexdigest(token.to_s)
 	end
 
+
+	def send_password_reset 
+		generate_token(:password_reset_token)
+  		self.update_attribute(:password_reset_sent_at, Time.zone.now)
+  		UserMailer.password_reset(self).deliver
+	end
 
 
 	# Returns the status on all the bets of the user
@@ -143,4 +144,13 @@ class User < ActiveRecord::Base
 		def create_remember_token
 			self.remember_token = User.hash(User.new_remember_token)
 		end
+
+		def generate_token(column)
+				self.update_attribute(column, User.new_remember_token)
+		end
+
+		def password_required?
+    		# Validation required if this is a new record or the password is being updated.
+    		self.new_record? or self.password?
+  		end
 end
