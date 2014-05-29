@@ -1,5 +1,5 @@
 class GamesController < ApplicationController
-  before_action :admin_user, only: [:index, :create, :new, :update]
+  before_action :admin_user, only: [:index, :create, :new, :update, :edit]
 
 
   def index
