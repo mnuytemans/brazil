@@ -62,9 +62,9 @@
 						<% if @bet.scored %>
 							<% if @bet.score == 0 %>
 								<td class="bad_result">
-							<% elsif @bet.score == 1 %>
+							<% elsif @bet.score == 2 %>
 								<td class="ok_result">
-							<% elsif @bet.score > 1 %>
+							<% elsif @bet.score > 2 %>
 								<td class="good_result">
 							<% end %>
 						<% else %>
