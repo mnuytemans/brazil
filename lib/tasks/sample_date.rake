@@ -48,14 +48,22 @@ namespace :db do
 
     # Create the setting parameters needs to run the application
       Setting.create(name: "Status", value: 0)
-      Setting.create(name: "16de Finale", value: 0)
-      Setting.create(name: "8ste Finale", value: 0)
-      Setting.create(name: "Kwartfinale", value: 0)
-      Setting.create(name: "Halve Finale", value: 0)
+      Setting.create(name: "8ste Finales", value: 0)
+      Setting.create(name: "Kwartfinales", value: 0)
+      Setting.create(name: "Halve Finales", value: 0)
+      Setting.create(name: "Finale", value: 0)
       Setting.create(name: "Wereldkampioen", value: 0)
       Setting.create(name: "Exact Score", value: 0)
       Setting.create(name: "Correct Score", value: 0)
       Setting.create(name: "Incorrect Score", value: 0)
 
+  end
+
+  task fix: :environment do
+    Setting.find(2).update_attributes(name: "8ste Finales")
+    Setting.find(3).update_attributes(name: "Kwartfinales")
+    Setting.find(4).update_attributes(name: "Halve Finales")
+    Setting.find(5).update_attributes(name: "Finale")
+    Setting.find(6).update_attributes(name: "Wereldkampioen")
   end
 end
