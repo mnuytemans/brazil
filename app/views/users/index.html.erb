@@ -121,61 +121,33 @@
 		</table>
 	</div>
 </div>
-	<% #else %>
-	<% end %>
+	<% else %>
 	<% @prev_table = Table.last %>
-	<% if @prev_table %>
-		<% @next_round = Round.where("teams < ?", @prev_table.round.teams).first %>
-		<% @bettables = Bettable.where(round: @prev_table.round).order("user_id") %>
-		<div class="row"><div class="span12">
-			<h2>Uitslag <%= @prev_table.round.name %></h2>
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>Uitslag</th>
-					<% @bettables.each do %>
-						<% |bettable| %>
-						<th><%= bettable.user.name[0..2] %></th>
-					<% end %>
-				</tr>
-			</thead>
-			<% (1..@prev_table.round.teams).each do |i| %>
-				<tr>
-					<td><%= Country.find(@prev_table.countries.order("id").ids[i-1]).name %></td>
-					<% @bettables.each do |bettable| %>
-						<% country_id = bettable.countries.order("id").ids[i-1] %>
-						<% if @prev_table.countries.exists?(country_id) %>
-							<td class="good_result"%>
-						<% else %>
-							<td class="bad_result"%>
-						<% end %>	
-							<%= Country.find(country_id).name %>
-						</td>
-					<% end %>
-				</tr>
-			<% end %>
-		</table>
-		</div></div>
-	<% else @next_round = Round.first %>
-	<% end %>
-	<% if @next_round %>
-		<% @bettables = Bettable.where(round: @next_round) %>
+		<% if @prev_table %>
+			<% @next_round = Round.where("teams < ?", @prev_table.round.teams).first %>
+			<% @bettables = Bettable.where(round: @prev_table.round).order("user_id") %>
 			<div class="row"><div class="span12">
-				<h2>Pronostiek <%= @next_round.name %></h2>
+				<h2>Uitslag <%= @prev_table.round.name %></h2>
 			<table class="table table-bordered">
 				<thead>
 					<tr>
+						<th>Uitslag</th>
 						<% @bettables.each do %>
 							<% |bettable| %>
 							<th><%= bettable.user.name[0..2] %></th>
 						<% end %>
 					</tr>
 				</thead>
-				<% (1..@next_round.teams).each do |i| %>
+				<% (1..@prev_table.round.teams).each do |i| %>
 					<tr>
+						<td><%= Country.find(@prev_table.countries.order("id").ids[i-1]).name %></td>
 						<% @bettables.each do |bettable| %>
 							<% country_id = bettable.countries.order("id").ids[i-1] %>
-							<td>
+							<% if @prev_table.countries.exists?(country_id) %>
+								<td class="good_result"%>
+							<% else %>
+								<td class="bad_result"%>
+							<% end %>	
 								<%= Country.find(country_id).name %>
 							</td>
 						<% end %>
@@ -183,12 +155,41 @@
 				<% end %>
 			</table>
 			</div></div>
+		<% else @next_round = Round.first %>
+		
+		<% if @next_round %>
+			<% @bettables = Bettable.where(round: @next_round) %>
+				<div class="row"><div class="span12">
+					<h2>Pronostiek <%= @next_round.name %></h2>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<% @bettables.each do %>
+								<% |bettable| %>
+								<th><%= bettable.user.name[0..2] %></th>
+							<% end %>
+						</tr>
+					</thead>
+					<% (1..@next_round.teams).each do |i| %>
+						<tr>
+							<% @bettables.each do |bettable| %>
+								<% country_id = bettable.countries.order("id").ids[i-1] %>
+								<td>
+									<%= Country.find(country_id).name %>
+								</td>
+							<% end %>
+						</tr>
+					<% end %>
+				</table>
+				</div></div>
+
+	<% end %>
 
 	<% end %>
 
 
 	
 
-	<% #end %>
+	<% end %>
 	
 	<% end %>	
