@@ -2,9 +2,9 @@ class User < ActiveRecord::Base
 	
 
 
-	has_one :betset
-	has_one :betjoker
-	has_many :bets, :through => :betset, dependent: :destroy
+	has_one :betset, dependent: :destroy
+	has_one :betjoker, dependent: :destroy
+	has_many :bets, :through => :betset
 	has_many :games, :through => :bets
 	has_many :rounds, :through => :bettables
 	has_many :bettables, dependent: :destroy
