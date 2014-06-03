@@ -12,9 +12,18 @@
 	<td>
 		<%= user.get_score unless user.get_score.nil? %>
 	</td>
+	<% if current_user.admin? %>
 	<td>
-		<% if current_user.admin? && !current_user?(user) %>
-			<%= link_to 'delete', user, method: :delete, data: {confirm: 'Are you sure?'} %>
+		<% if user.bet_status["Completed"] %>
+			Volledig
+		<% else %>
+			Onvolledig
 		<% end %>
 	</td>
+	<td>
+		<% if !current_user?(user) %>
+			<%= link_to 'delete', user, method: :delete, data: {confirm: 'Are you sure?'} %>	
+		<% end %>
+	</td>
+	<% end %>
 </tr>

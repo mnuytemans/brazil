@@ -18,8 +18,10 @@
 				<th>
 					Score
 				</th>
-				<th>
-				</th>
+				<% if current_user.admin? %>
+				<th>Status</th>
+				<th>Actie</th>
+				<% end %>
 		</thead>
 		<tbody>
 		<% User.order('score DESC').each_with_index do |user, index| %>
