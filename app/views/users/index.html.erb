@@ -3,6 +3,23 @@
 <% else %>
 <h1>Deelnemers</h1>
 <% end %>
+<% if current_user.admin? %>
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+	    $(".payment").on("change", function() {
+	        $.ajax({
+	        	type: "POST",
+	            url: "/users/payed/"+this.value,
+	            data: {"payed": this.checked }, 
+	            success: function() { alert('Betaling geregistreerd.') },
+	            error: function() { alert('Fout bij het verwerken van de betaling.')}
+	        });
+	    });
+	});
+
+</script>
+<% end %>
 <div class="row">
 	<div class="span12">
 		
@@ -19,8 +36,9 @@
 					Score
 				</th>
 				<% if current_user.admin? %>
-				<th>Status</th>
-				<th>Actie</th>
+					<th>Status</th>
+					<th>Betaling</th>
+					<th>Actie</th>
 				<% end %>
 		</thead>
 		<tbody>

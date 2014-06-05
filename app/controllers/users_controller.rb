@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :signed_in_user, only: [:index, :edit, :update]
   before_action :correct_user,   only: [:edit, :update]
-  before_action :admin_user, only: [:destroy]
+  before_action :admin_user, only: [:destroy, :payed]
   before_action :open, only: [:create]
 
   def index
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
   end
 
   def update
-      @user = User.find(params[:id])
+    @user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
       redirect_to @user
@@ -56,6 +56,16 @@ class UsersController < ApplicationController
     @user.destroy
     flash[:success] = "User deleted."
     redirect_to users_url
+  end
+
+  def payed
+    @user = User.find(params[:id])
+    if @user.update_attribute(:payment, params[:payed])
+      render text: 'Betaling geregistreerd.', content_type: 'text/plain', status: 200 
+    else
+      render text: 'Fout bij het registreren van de betaling.', content_type: 'text/plain', status: 500
+    end
+    
   end
 
 

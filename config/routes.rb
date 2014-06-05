@@ -17,6 +17,7 @@ Brazil::Application.routes.draw do
 
 
   root  'static_pages#home'
+  match '/users/payed/:id', to: 'users#payed', via: 'post'
   match '/signup', to: 'users#New', via: 'get'
   match '/participate', to: 'betsets#new', via: 'get'
   match '/help', to: 'static_pages#help', via: 'get'

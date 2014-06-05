@@ -21,6 +21,9 @@
 		<% end %>
 	</td>
 	<td>
+		<%= check_box_tag 'payment', user.id, user.payment, :class => 'payment' %> 
+	</td>
+	<td>
 		<% if !current_user?(user) %>
 			<%= link_to 'delete', user, method: :delete, data: {confirm: 'Are you sure?'} %>	
 		<% end %>

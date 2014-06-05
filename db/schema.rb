@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140529104932) do
+ActiveRecord::Schema.define(version: 20140605111644) do
 
   create_table "betjokers", force: true do |t|
     t.integer  "user_id"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 20140529104932) do
     t.integer  "score"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.boolean  "payment"
   end
 
   add_index "users", ["remember_token"], name: "index_users_on_remember_token"
