@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 	has_many :games, :through => :bets
 	has_many :rounds, :through => :bettables
 	has_many :bettables, dependent: :destroy
+	has_many :histories, dependent: :destroy
 	
 
 	before_save { self.email = email.downcase }
@@ -133,6 +134,7 @@ class User < ActiveRecord::Base
 			end
 		end
 		self.update_attribute(:score, score.to_i)
+		self.histories.create(score: score.to_i)
 	end
 
 	def get_score

@@ -7,6 +7,17 @@ class Bet < ActiveRecord::Base
 		{"homescore" => self.homescore, "awayscore" => self.awayscore}
 	end
 
+	def get_result
+		if homescore == awayscore
+			return "X"
+		elsif homescore > awayscore
+			return "1"
+		else 
+			return "2"
+		end
+		
+	end
+
 	def set_score(score)
 		self.update_attributes(score: score)
 		self.update_attributes(scored: true)

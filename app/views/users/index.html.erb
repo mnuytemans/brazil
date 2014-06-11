@@ -121,9 +121,10 @@
 				</tr>
 			</thead>
 			<% @next_games.each do |game| %>
+			<% odds = game.get_odds %>
 				<tr>
 					<td><%= game.playdate %></td>
-					<td><%= game.homeside + " - " + game.awayside %></td>
+					<td><%= game.homeside + " - " + game.awayside %><br><br> <b>1:</b> <%= odds["1"].to_s %>% <b>X:</b> <%= odds["X"].to_s %>% <b>2:</b> <%= odds["2"].to_s %>%  </td>
 					<% User.all.each do %>
 					<% |user| %>
 

@@ -37,4 +37,37 @@ class Game < ActiveRecord::Base
 		end
 	end
 
+	def get_odds
+		odds = {"1" => 1, "X" => 1, "2" => 1}
+		results = []
+		self.bets.each do |bet|
+			results << bet.get_result
+		end
+		size = results.size.to_d
+
+		odds["1"] = (results.count {|item| item == "1"}) / size * 100
+		odds["X"] = (results.count {|item| item == "X"}) / size * 100
+		odds["2"] = (results.count {|item| item == "2"}) / size * 100
+		
+		return odds
+	end
+
+	def get_bets
+		bets = {}
+		bets["1"] = []
+		bets["X"] = []
+		bets["2"] = []
+
+		self.bets.each do |bet|
+			if bet.get_result == "1"
+				bets["1"] << bet
+			elsif bet.get_result == "X"
+				bets["X"] << bet
+			else
+				bets["2"] << bet
+			end
+		end
+		return bets
+	end
+
 end
