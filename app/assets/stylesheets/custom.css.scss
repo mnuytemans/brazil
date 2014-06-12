@@ -206,6 +206,15 @@ input {
       background-color: #FF0033;
     }
 
+/* Table layout of Tussenstand page */
+
+table {
+  .game-cell {
+    vertical-align: middle;
+    text-align: center;
+    width: 25%;
+  }
+}
 
 
 

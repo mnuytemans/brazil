@@ -56,6 +56,10 @@
 		<h2>Recente wedstrijden</h2>
 		<% @prev_games = Game.where("playdate <= :today and homescore IS NOT null and awayscore IS NOT null", :today => Date.today).last(4) %>
 		<% if !@prev_games.blank? %>
+			
+
+
+
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -107,39 +111,75 @@
 	<% if !@next_games.blank? %>
 	<div class="span12">
 		<h2>Eerstvolgende wedstrijden</h2>
-		<table class="table table-bordered">
-			<thead>
+		<% @next_games.each do |game| %>
+		<% odds = game.get_odds %>
+		<% bets = game.get_bets %>
+			<table class="table table-bordered">
+				<col />
+				<% if !bets["1"].empty? %>
+				<col span=<%= bets["1"].size %>/>
+				<% end %>
+				<% if !bets["X"].empty? %>
+				<col span=<%= bets["X"].size %>/>
+				<% end %>
+				<% if !bets["2"].empty? %>
+				<col span=<%= bets["2"].size %>/>
+				<% end %>
 				<tr>
-					<th>Datum</th>
-					<th>Wedstrijd</th>
-					<% User.all.each do %>
-					<% |user| %>
-					<th>
-					<%= user.name[0..2] %>
-					</th>
+					<th rowspan="3" class="game-cell"><%= game.homeside %> - <%= game.awayside %><br><i> <%= game.playdate %></i></th>
+					<% if !bets["1"].empty? %>
+						<th colspan=<%= bets["1"].size %> class="odds-column">1 : <%= odds["1"].to_s %>% </th>
+					<% end %>
+					<% if !bets["X"].empty? %>
+						<th colspan=<%= bets["X"].size %> class="odds-column">X : <%= odds["X"].to_s %>% </th>
+					<% end %>
+					<% if !bets["2"].empty? %>
+						<th colspan=<%= bets["2"].size %> class="odds-column">2 : <%= odds["2"].to_s %>%</th>
 					<% end %>
 				</tr>
-			</thead>
-			<% @next_games.each do |game| %>
-			<% odds = game.get_odds %>
 				<tr>
-					<td><%= game.playdate %></td>
-					<td><%= game.homeside + " - " + game.awayside %><br><br> <b>1:</b> <%= odds["1"].to_s %>% <b>X:</b> <%= odds["X"].to_s %>% <b>2:</b> <%= odds["2"].to_s %>%  </td>
-					<% User.all.each do %>
-					<% |user| %>
-
-						<% @bet = Bet.where(betset_id: Betset.where(user_id: user.id), game_id: game.id).first %>
-						<% if !@bet.nil? %>
-						<td>
-							<%= @bet.homescore.to_s + " - " + @bet.awayscore.to_s %>
-						</td>
-						<% else %>
-						<td>NA</td>
+					<% if !bets["1"].empty? %>
+						<% bets["1"].each do %>
+							<% |bet| %>
+							<th><%= bet.betset.user.name[0..2] %></th>
+						<% end %>
+					<% end %>
+					<% if !bets["X"].empty? %>
+						<% bets["X"].each do %>
+							<% |bet| %>
+							<th><%= bet.betset.user.name[0..2][0..2] %></th>
+						<% end %>
+					<% end %>
+					<% if !bets["2"].empty? %>
+						<% bets["2"].each do %>
+							<% |bet| %>
+							<th><%= bet.betset.user.name[0..2] %></th>
 						<% end %>
 					<% end %>
 				</tr>
-			<% end %>	
-		</table>
+				<tr>
+					<% if !bets["1"].empty? %>
+						<% bets["1"].each do %>
+							<% |bet| %>
+							<td><%= bet.homescore %> - <%= bet.awayscore %></td>
+						<% end %>
+					<% end %>
+					<% if !bets["X"].empty? %>
+						<% bets["X"].each do %>
+							<% |bet| %>
+							<td><%= bet.homescore %> - <%= bet.awayscore %></td>
+						<% end %>
+					<% end %>
+					<% if !bets["2"].empty? %>
+						<% bets["2"].each do %>
+							<% |bet| %>
+							<td><%= bet.homescore %> - <%= bet.awayscore %></td>
+						<% end %>
+					<% end %>
+				</tr>
+			</table>
+		<% end %>	
+	
 	</div>
 </div>
 	<% else %>

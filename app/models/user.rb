@@ -100,18 +100,14 @@ class User < ActiveRecord::Base
 		if @betstatus.nil?
 			self.bet_status
 		end
-
 		previous_bet_round_index = @betstatus["Bettable"].keys.index(round.to_i) -1
-
 		if previous_bet_round_index > 0 
 			last_round = @betstatus["Bettable"].keys[previous_bet_round_index]
 			last_countries = bettables.find_by(round_id: last_round).countries.to_a
 		else
 			last_countries = Country.all
 		end
-
 		return last_countries
-
 	end
 
 	def update_score
