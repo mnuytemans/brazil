@@ -24,7 +24,7 @@ class TablesController < ApplicationController
 
   def create
   	@table = Table.new(table_params)
-  	@table.country_ids = params[:tables][:country_ids].values
+  	@table.country_ids = params[:country_ids]
   	@countries = Country.all
   	if @table.save
   		flash[:success] = "Results added"
@@ -37,7 +37,8 @@ class TablesController < ApplicationController
 
   def update
   	@table = Table.find_by(table_params)
-  	@table.country_ids = params[:tables][:country_ids].values
+    @table.countries.clear
+  	@table.country_ids = params[:country_ids]
   	if @table.save
   		flash[:success] = "Results added"
     	redirect_to current_user

@@ -16,7 +16,7 @@
                 <% if Table.where(round_id: bettable.round.id).first.countries.exists?(country.id) %>
                   <td class="good_result">
                   <% else %>
-                  <td class="bad_result">
+                  <td>
                 <% end %>
               <% else %>
                 <td>

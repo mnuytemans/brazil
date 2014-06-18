@@ -178,7 +178,7 @@
 	
 	</div>
 </div>
-	<% else %>
+	<% end %>
 	<% @prev_table = Table.last %>
 		<% if @prev_table %>
 			<% @next_round = Round.where("teams < ?", @prev_table.round.teams).first %>
@@ -197,13 +197,15 @@
 				</thead>
 				<% (1..@prev_table.round.teams).each do |i| %>
 					<tr>
-						<td><%= Country.find(@prev_table.countries.order("id").ids[i-1]).name %></td>
+						<td><% if @prev_table.countries.order("id").ids[i-1] %> 
+							<%= Country.find(@prev_table.countries.order("id").ids[i-1]).name %><% end %>
+						</td>
 						<% @bettables.each do |bettable| %>
 							<% country_id = bettable.countries.order("id").ids[i-1] %>
 							<% if @prev_table.countries.exists?(country_id) %>
 								<td class="good_result"%>
 							<% else %>
-								<td class="bad_result"%>
+								<td %>
 							<% end %>	
 								<%= Country.find(country_id).name %>
 							</td>
@@ -247,6 +249,5 @@
 
 	
 
-	<% end %>
 	
 	<% end %>	

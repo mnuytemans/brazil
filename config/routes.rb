@@ -1,6 +1,8 @@
 Brazil::Application.routes.draw do
   
   
+  get "histories/index"
+  get "history/index"
   get "password_resets/new"
   get "settings/index"
   get "tables/new"
@@ -14,6 +16,7 @@ Brazil::Application.routes.draw do
   resources :bettables, only: [:new, :create, :edit, :update, :destroy, :show, :index]
   resources :settings, only: [:index, :update, :edit]
   resources :password_resets
+  resources :histories, only: [:index]
 
 
   root  'static_pages#home'
